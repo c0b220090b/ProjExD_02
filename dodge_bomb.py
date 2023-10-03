@@ -44,16 +44,14 @@ def main():
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)
-    #turn_kk_img = pg.transform.rotozoom(pg.transform.flip(kk_img, True, False), 90, 0)
-    #kk_img_dct = {}
-    #for i, num in enumerate(left_total_mv, -1):
-    #    kk_img_dct[num] = pg.transform.rotozoom(kk_img, 45*i, 0)
-    #for i, num in enumerate(right_total_mv):
-    #    kk_img_dct[num] = pg.transform.rotozoom(turn_kk_img, 45*i, 0)
-    #kk_rct_dct = {}
-    #for i, key, value in enumerate(kk_img_dct.items()):
-    #    kk_rct_dct[key] = value.get_rect()
-    #    kk_rct_dct[key].center = (900, 400)
+    turn_kk_img = pg.transform.rotozoom(pg.transform.flip(kk_img, True, False), 90, 1.0)
+    kk_img_dct = {}
+    for i, num in enumerate(left_total_mv, -1):
+        kk_img_dct[num] = pg.transform.rotozoom(kk_img, -45*i, 1.0)
+    for i, num in enumerate(right_total_mv):
+        kk_img_dct[num] = pg.transform.rotozoom(turn_kk_img, -45*i, 1.0)
+    kk_img_dct[(0, 0)] = kk_img
+
     """爆弾"""
     bd_img = pg.Surface((20, 20))#練習1
     pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
@@ -95,14 +93,10 @@ def main():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
-                #kk_img_new = kk_img_dct[(sum_mv[0], sum_mv[1])]
-                #kk_rct_new = kk_rct_dct[(sum_mv[0], sum_mv[1])]
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-            #kk_img_new = kk_img_dct[(sum_mv[0], sum_mv[1])]
-            #kk_rct_new = kk_rct[(sum_mv[0], sum_mv[1])]
-        screen.blit(kk_img, kk_rct)
+        screen.blit(kk_img_dct[(sum_mv[0], sum_mv[1])], kk_rct)
         """爆弾"""
         bd_rct.move_ip(vx, vy)
         yoko, tate = check_bound(bd_rct)
