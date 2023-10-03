@@ -39,12 +39,12 @@ def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("fig/pg_bg.jpg")
-    """こうかとん"""    
+    """こうかとん""" 
     kk_img = pg.image.load("fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)
-    turn_kk_img = pg.transform.rotozoom(pg.transform.flip(kk_img, True, False), 90, 1.0)
+    turn_kk_img = pg.transform.rotozoom(pg.transform.flip(kk_img, True, False), 90, 1.0)#演習問題1
     kk_img_dct = {}
     for i, num in enumerate(left_total_mv, -1):
         kk_img_dct[num] = pg.transform.rotozoom(kk_img, -45*i, 1.0)
@@ -59,7 +59,7 @@ def main():
     bd_rct = bd_img.get_rect()
     x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bd_rct.center = (x, y)
-    bb_imgs = []
+    bb_imgs = []#演習問題2
     for r in range(1, 11):
         bb_img = pg.Surface((20*r, 20*r))
         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
@@ -91,7 +91,7 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(kk_img_dct[(sum_mv[0], sum_mv[1])], kk_rct)
+        screen.blit(kk_img_dct[(sum_mv[0], sum_mv[1])], kk_rct)#演習問題1
         """爆弾"""
         avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
         bd_rct.move_ip(avx, avy)
@@ -100,7 +100,7 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
-        bb_img = bb_imgs[min(tmr//500, 9)]
+        bb_img = bb_imgs[min(tmr//500, 9)]#演習問題2
         screen.blit(bb_img, bd_rct)
 
         pg.display.update()
