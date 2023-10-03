@@ -13,6 +13,18 @@ delta = {
     pg.K_RIGHT: (+5, 0),
 }
 
+def check_bound(obj_rct: pg.Rect):
+    """
+    引数: 引数はこうかとん、または爆弾のRect
+    戻り値: タプル(縦と横の方向の判定結果)
+    Rectオブジェクトのleft, right, top, bottomの値から画面内・外を判断する
+    """
+    yoko, tate = True, True
+    if obj_rct.left < 0 or WIDTH < obj_rct.right:
+        yoko = False
+    if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
+        tate = False
+    return yoko, tate
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -50,11 +62,18 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
         """爆弾"""
         bd_rct.move_ip(vx, vy)
+        yoko, tate = check_bound(bd_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bd_img, bd_rct)
-        
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
