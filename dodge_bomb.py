@@ -59,17 +59,12 @@ def main():
     bd_rct = bd_img.get_rect()
     x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bd_rct.center = (x, y)
-    #bb_imgs = []
-    #for r in range(1, 11):
-    #    bb_img = pg.Surface((20*r, 20*r))
-    #    pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
-    #    bb_img.set_colorkey((0, 0, 0))
-    #    bb_imgs.appned(bb_img)
-    #bb_rcts = []
-    #for datum in bb_imgs:
-    #    bb_rcts.append(datum.get_rect())
-    #    datum.center = (x, y)
-    #bd_rct.center = (x, y)
+    bb_imgs = []
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_img.set_colorkey((0, 0, 0))
+        bb_imgs.append(bb_img)
     vx, vy = +5, +5 #練習2
 
     clock = pg.time.Clock()
@@ -98,15 +93,15 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img_dct[(sum_mv[0], sum_mv[1])], kk_rct)
         """爆弾"""
-        bd_rct.move_ip(vx, vy)
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        bd_rct.move_ip(avx, avy)
         yoko, tate = check_bound(bd_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
-        #avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
-        #bb_img = bb_imgs[min(tmr//500, 9)]
-        screen.blit(bd_img, bd_rct)
+        bb_img = bb_imgs[min(tmr//500, 9)]
+        screen.blit(bb_img, bd_rct)
 
         pg.display.update()
         tmr += 1
